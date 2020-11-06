@@ -7,7 +7,8 @@ for user in $(echo -n "$CP_ACCOUNTS"); do
     echo "$domains" | while read -r domain; do
         dirnames="/home/${user}/mail/${domain}"
         if [[ ! -d $dirnames ]]; then
-            echo "$dirnames";
+            rsync -avz -e "ssh -p PORT" root@IPADDRESS:"${dirnames}"/* "${dirnames}"/;
+            /scripts/remove_dovecot_index_files --user "$user";
         fi
     done
 done
